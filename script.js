@@ -67,7 +67,7 @@ $( "#shopName" ).change(function() {
     for (let i = 0; i < shop.goods.length; i++) {
         var goods = shop.goods[i];
   
-            tbl += '<tr class="tr">';
+            tbl += '<tr class="tr"' +'id='+ goods.id +'>';
             tbl += '<td class="g_id" >' + goods.id + "</td>";
             tbl += '<td class="g_name">' + goods.name + "</td>";
             tbl += '<td class="g_color">' + goods.color + "</td>";
@@ -98,21 +98,15 @@ $( "#shopName" ).change(function() {
             
         $('.saveBut').on('click', function() { 
             
-            console.log($('tr[2]'));
-            
-            // console.log($('#' + $('.saveBut').attr('data-ID')));
-           
-
-            // console.log($('.g_id').attr("id"))
-            // if ($('.id_goods').val()==$('.g_id').attr("id")) {
-            //     $('.g_name').text($('.name_goods').val());
-            //     $('.g_color').text($('.color_goods').val());
-            //     $('.g_price').text($('.price_goods').val());
-            // }
-            // else alert("AAAAAAAAAAAAAAAAAAAAAAAAaa")
-            // $('.g_name').text($('.name_goods').val());
-            // $('.g_color').text($('.color_goods').val());
-            // $('.g_price').text($('.price_goods').val());
+            // var shop = stores[$("#shopName").val()]
+            for (let i = 0; i < stores.length; i++) {
+                if ($('.saveBut').attr('data-ID')==(stores[i].goods[i].id)) { 
+                    $('.g_name').text($('.name_goods').val());
+                    $('.g_color').text($('.color_goods').val());
+                    $('.g_price').text($('.price_goods').val());
+                    // console.log($('.g_name').text())      
+    }         
+            }
         });
 
     });
@@ -123,4 +117,4 @@ $( "#shopName" ).change(function() {
 });
 
 selectMas(stores)
-
+// console.log($('.g_name').text())
