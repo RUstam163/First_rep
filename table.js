@@ -70,10 +70,7 @@ function selectCreate(mas){
 
 }
 
-selectCreate(stores)
-
-function tableCreate(mas){ 
-    console.log(mas.goods)                     
+function tableCreate(mas){                     
     $('#table').remove();
     $('#addButton').remove();
     $('#add_block').children().remove();
@@ -93,20 +90,26 @@ function tableCreate(mas){
         click: function(){
             $('#add_block').children().remove();
             $('<form>', { id: 'form', class: 'form'}).appendTo('#add_block');
-            $('<label>',{text: 'Название товара', id: 'label_name'}).appendTo('#add_block');
-            $('<label>',{text: 'Цвет', id: 'label_color'}).appendTo('#add_block');
-            $('<label>',{text: 'Цена', id: 'label_price'}).appendTo('#add_block');
+            $('<label>', {text: 'Название товара', id: 'label_name'}).appendTo('#add_block');
+            $('<label>', {text: 'Цвет', id: 'label_color'}).appendTo('#add_block');
+            $('<label>', {text: 'Цена', id: 'label_price'}).appendTo('#add_block');
             $('#label_name').append($('<input>', {id: 'add_name_input', type: 'text'}));
             $('#label_color').append($('<input>', {id: 'add_color_input', type: 'text'}));
             $('#label_price').append($('<input>', {id: 'add_price_input', type: 'text'}));
             $('<button>',{
                 class:'save',
                 text:'Добавить',
-                'data-save-shop-id':mas.id,
-                'data-save-goods-id': function() {for (let i = 0; i < stores.length; i++) {
-                    return stores[i].goods[stores[i].goods.length-1].id}
-                        
-                    },
+                'data-add-shop-id':mas.id,
+                'data-add-goods-id': function() {
+                    let maxGoodsId = 0;
+                    for (let i = 0; i < stores.length; i++) {                        
+                        let goodsID = stores[i].goods[stores[i].goods.length-1].id;
+                        if (goodsID > maxGoodsId) {
+                             maxGoodsId = goodsID   
+                        }
+                    }
+                     return maxGoodsId;    
+                },
                 click: saveAdd
             }).appendTo('#table');
             
@@ -179,20 +182,21 @@ function save(){
     }      
 }
 
-
 function saveAdd(){
     let nameAdd = $('#add_name_input').val();
     let colorAdd = $('#add_color_input').val();
     let priceAdd = $('#add_price_input').val();
-        
+    let addShopId = $(this).data('addShopId');
+    let addGoodsId = $(this).data('addGoodsId');
+    for (let i = 0; i < stores.length; i++) {
+        if (addShopId==stores[i].id) {
+                stores[i].goods.push({id: ++addGoodsId, name: nameAdd, color: colorAdd, price: priceAdd})
+                tableCreate(stores[i]);
+        }
+    }
 }
 
-for (let i = 0; i < stores.length; i++) {
-console.log(stores[i].goods[stores[i].goods.length-1].id)
-    
-}
-
-    
+selectCreate(stores)  
 
 
 
