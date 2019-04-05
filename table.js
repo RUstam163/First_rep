@@ -72,8 +72,11 @@ function selectCreate(mas){
 
 selectCreate(stores)
 
-function tableCreate(mas){
+function tableCreate(mas){ 
+    console.log(mas.goods)                     
     $('#table').remove();
+    $('#addButton').remove();
+    $('#add_block').children().remove();
     $('<table>', {id: 'table', class: 'table', border: '1'}).appendTo('#block');
     $('<thead>', {id: 'thead', class: 'thead'}).appendTo('#table');
     $('<tr>', {id: 'tr_head', class: 'tr_head'}).appendTo('#thead');
@@ -84,7 +87,33 @@ function tableCreate(mas){
     $('<th>', {text: 'Изменить'}).appendTo('#tr_head');
     $('<th>', {text: 'Удалить'}).appendTo('#tr_head');
     $('<tbody>', {id: 'tbody', class: 'tbody'}).appendTo('#table');
-    // console.log(mas.goods);
+    $('<button>', {
+        text: 'Добавить товар',
+        id: 'addButton', 
+        click: function(){
+            $('#add_block').children().remove();
+            $('<form>', { id: 'form', class: 'form'}).appendTo('#add_block');
+            $('<label>',{text: 'Название товара', id: 'label_name'}).appendTo('#add_block');
+            $('<label>',{text: 'Цвет', id: 'label_color'}).appendTo('#add_block');
+            $('<label>',{text: 'Цена', id: 'label_price'}).appendTo('#add_block');
+            $('#label_name').append($('<input>', {id: 'add_name_input', type: 'text'}));
+            $('#label_color').append($('<input>', {id: 'add_color_input', type: 'text'}));
+            $('#label_price').append($('<input>', {id: 'add_price_input', type: 'text'}));
+            $('<button>',{
+                class:'save',
+                text:'Добавить',
+                'data-save-shop-id':mas.id,
+                'data-save-goods-id': function() {for (let i = 0; i < stores.length; i++) {
+                    return stores[i].goods[stores[i].goods.length-1].id}
+                        
+                    },
+                click: saveAdd
+            }).appendTo('#table');
+            
+
+        }
+    }).appendTo('#add_block')
+
     $.each(mas.goods, function(index, data) {
         let tr = $('<tr>').appendTo('#tbody');
         $('<td>', {class: 'id', text:data.id}).appendTo(tr);
@@ -122,7 +151,6 @@ function formCreate(){
             text:'Сохранить',
             click: save
         }).appendTo('#form_block');
-    console.log(this)
 }
 
 
@@ -139,7 +167,6 @@ function save(){
     for (let i = 0; i < stores.length; i++) {
         if (idSaveShop==stores[i].id) {
             for (let z = 0; z < stores[i].goods.length; z++) {
-                // console.log(idSaveGoods+','+stores[i].goods[z].id)
                 if (stores[i].goods[z].id == idSaveGoods) {
                     stores[i].goods[z].name = nameSave;
                     stores[i].goods[z].color = colorSave;
@@ -151,6 +178,20 @@ function save(){
         } 
     }      
 }
+
+
+function saveAdd(){
+    let nameAdd = $('#add_name_input').val();
+    let colorAdd = $('#add_color_input').val();
+    let priceAdd = $('#add_price_input').val();
+        
+}
+
+for (let i = 0; i < stores.length; i++) {
+console.log(stores[i].goods[stores[i].goods.length-1].id)
+    
+}
+
     
 
 
